@@ -27,9 +27,9 @@ let chartInstance   = null;
 const STORAGE_KEY   = 'gpa_tracker_data_v2';
 
 // ─── GRADE CONVERSION ─────────────────────────────────────────
-// Thang điểm: 8.5+ → A/4.0, 8.0+ → B+/3.5, 7.0+ → B/3.0,
-//             6.5+ → C+/2.5, 5.5+ → C/2.0, 5.0+ → D+/1.5,
-//             4.0+ → D/1.0, <4.0 → F/0
+// Thang điểm UTH: 8.5–10 → A/4.0, 8.0–8.4 → B+/3.5, 7.0–7.9 → B/3.0,
+//                 6.0–6.9 → C+/2.5, 5.5–5.9 → C/2.0, 5.0–5.4 → D+/1.5,
+//                 4.0–4.9 → D/1.0, 2.1–3.9 → F+/0, 0–2.0 → F/0
 function scoreToGrade(score) {
   if (score === null || score === undefined || score === '') return { letter: '—', gpa4: null };
   const s = parseFloat(score);
@@ -37,10 +37,11 @@ function scoreToGrade(score) {
   if (s >= 8.5)  return { letter: 'A',  gpa4: 4.0 };
   if (s >= 8.0)  return { letter: 'B+', gpa4: 3.5 };
   if (s >= 7.0)  return { letter: 'B',  gpa4: 3.0 };
-  if (s >= 6.5)  return { letter: 'C+', gpa4: 2.5 };
+  if (s >= 6.0)  return { letter: 'C+', gpa4: 2.5 };
   if (s >= 5.5)  return { letter: 'C',  gpa4: 2.0 };
   if (s >= 5.0)  return { letter: 'D+', gpa4: 1.5 };
   if (s >= 4.0)  return { letter: 'D',  gpa4: 1.0 };
+  if (s >= 2.1)  return { letter: 'F+', gpa4: 0.0 };
   return { letter: 'F', gpa4: 0.0 };
 }
 
@@ -53,7 +54,7 @@ function gpaRank(gpa) {
   if (gpa >= 3.2) return { label: 'Giỏi',        color: '#60a5fa', bg: 'rgba(59,130,246,0.18)',  border: 'rgba(59,130,246,0.35)',  icon: '⭐' };
   if (gpa >= 2.5) return { label: 'Khá',         color: '#a78bfa', bg: 'rgba(167,139,250,0.18)', border: 'rgba(167,139,250,0.35)', icon: '👍' };
   if (gpa >= 2.0) return { label: 'Trung bình',  color: '#fbbf24', bg: 'rgba(251,191,36,0.18)',  border: 'rgba(251,191,36,0.35)',  icon: '📊' };
-  if (gpa >= 1.0) return { label: 'Yếu',         color: '#fb923c', bg: 'rgba(249,115,22,0.18)',  border: 'rgba(249,115,22,0.35)',  icon: '⚠️' };
+  if (gpa >= 1.0) return { label: 'Trung bình yếu', color: '#fb923c', bg: 'rgba(249,115,22,0.18)',  border: 'rgba(249,115,22,0.35)',  icon: '⚠️' };
   return           { label: 'Kém',          color: '#f87171', bg: 'rgba(239,68,68,0.18)',   border: 'rgba(239,68,68,0.35)',   icon: '❌' };
 }
 
