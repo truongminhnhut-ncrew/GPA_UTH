@@ -1,4 +1,3 @@
-```js
 /* ================================================
    GPA TRACKER – APPLICATION LOGIC
    Cấu trúc: 8 kỳ chính + 3 kỳ hè = 11 học kỳ
@@ -506,4 +505,3 @@ document.addEventListener('DOMContentLoaded', () => {
   loadDB();
   showOverview();
 });
-```
