@@ -127,6 +127,7 @@ function createSubject() {
     qt:      '',
     gk:      '',
     ck:      '',
+    tk:      '',        // Điểm Tổng Kết nhập tay (ưu tiên hơn công thức)
     finalScore: null,
     letter:  '—',
     gpa4:    null,
@@ -134,8 +135,14 @@ function createSubject() {
 }
 
 function updateSubjectCalc(sub) {
-  const fs = calcFinalScore(sub.qt, sub.gk, sub.ck);
-  sub.finalScore = fs !== null ? Math.round(fs * 10) / 10 : null;
+  // Ưu tiên tk (nhập tay) nếu có giá trị hợp lệ
+  const hasTk = sub.tk != null && sub.tk !== '' && !isNaN(parseFloat(sub.tk));
+  if (hasTk) {
+    sub.finalScore = Math.round(parseFloat(sub.tk) * 10) / 10;
+  } else {
+    const raw = calcFinalScore(sub.qt, sub.gk, sub.ck);
+    sub.finalScore = raw !== null ? Math.round(raw * 10) / 10 : null;
+  }
   const { letter, gpa4 } = sub.finalScore !== null
     ? scoreToGrade(sub.finalScore)
     : { letter: '—', gpa4: null };
@@ -449,8 +456,12 @@ function renderSubjectTable(idx) {
       <td class="td-center"><input class="cell-input score-input" type="number" min="0" max="10" step="0.1" value="${s.qt}" placeholder="—" onchange="updateScore(${idx},${i},'qt',this.value)" /></td>
       <td class="td-center"><input class="cell-input score-input" type="number" min="0" max="10" step="0.1" value="${s.gk}" placeholder="—" onchange="updateScore(${idx},${i},'gk',this.value)" /></td>
       <td class="td-center"><input class="cell-input score-input" type="number" min="0" max="10" step="0.1" value="${s.ck}" placeholder="—" onchange="updateScore(${idx},${i},'ck',this.value)" /></td>
-      <td class="td-center" id="final-${idx}-${i}">
-        ${s.finalScore !== null ? `<span style="font-weight:700;color:#c084fc">${s.finalScore.toFixed(1)}</span>` : '<span style="color:#5555a0">—</span>'}
+      <td class="td-center">
+        <input class="cell-input score-input" type="number" min="0" max="10" step="0.1"
+          id="final-input-${idx}-${i}"
+          value="${s.tk}"
+          placeholder="${s.finalScore !== null ? s.finalScore.toFixed(1) : '—'}"
+          onchange="updateFinalScore(${idx},${i},this.value)" />
       </td>
       <td class="td-center" id="grade-${idx}-${i}">
         ${s.letter !== '—' ? `<span class="grade-chip grade-${s.letter.replace('+','\\+')}">${s.letter}</span>` : '<span style="color:#5555a0">—</span>'}
@@ -495,16 +506,33 @@ function updateField(semIdx, subIdx, field, value) {
 function updateScore(semIdx, subIdx, field, value) {
   db[semIdx][subIdx][field] = value;
   updateSubjectCalc(db[semIdx][subIdx]);
-  // Update display cells
   const sub = db[semIdx][subIdx];
-  const finalCell = document.getElementById(`final-${semIdx}-${subIdx}`);
+  // Cap nhat placeholder o TK khi tk chua nhap thu cong
+  const finalInput = document.getElementById(`final-input-${semIdx}-${subIdx}`);
+  if (finalInput && (sub.tk == null || sub.tk === '')) {
+    finalInput.placeholder = sub.finalScore !== null ? sub.finalScore.toFixed(1) : '—';
+  }
   const gradeCell = document.getElementById(`grade-${semIdx}-${subIdx}`);
   const gpa4Cell  = document.getElementById(`gpa4-${semIdx}-${subIdx}`);
-  if (finalCell) finalCell.innerHTML = sub.finalScore !== null
-    ? `<span style="font-weight:700;color:#c084fc">${sub.finalScore.toFixed(1)}</span>`
-    : '<span style="color:#5555a0">—</span>';
   if (gradeCell) gradeCell.innerHTML = sub.letter !== '—'
-    ? `<span class="grade-chip grade-${sub.letter.replace('+','\\+')}">${sub.letter}</span>`
+    ? `<span class="grade-chip grade-${sub.letter.replace('+' ,'\\+')}">${sub.letter}</span>`
+    : '<span style="color:#5555a0">—</span>';
+  if (gpa4Cell)  gpa4Cell.innerHTML  = sub.gpa4 !== null
+    ? `<span class="gpa-value" style="color:${gpaColor(sub.gpa4)}">${sub.gpa4.toFixed(1)}</span>`
+    : '<span style="color:#5555a0">—</span>';
+  refreshCalc(semIdx);
+  saveDB();
+}
+
+// Xu ly nhap thu cong Diem TK (uu tien hon cong thuc qt/gk/ck)
+function updateFinalScore(semIdx, subIdx, value) {
+  db[semIdx][subIdx].tk = value;
+  updateSubjectCalc(db[semIdx][subIdx]);
+  const sub = db[semIdx][subIdx];
+  const gradeCell = document.getElementById(`grade-${semIdx}-${subIdx}`);
+  const gpa4Cell  = document.getElementById(`gpa4-${semIdx}-${subIdx}`);
+  if (gradeCell) gradeCell.innerHTML = sub.letter !== '—'
+    ? `<span class="grade-chip grade-${sub.letter.replace('+' ,'\\+')}">${sub.letter}</span>`
     : '<span style="color:#5555a0">—</span>';
   if (gpa4Cell)  gpa4Cell.innerHTML  = sub.gpa4 !== null
     ? `<span class="gpa-value" style="color:${gpaColor(sub.gpa4)}">${sub.gpa4.toFixed(1)}</span>`
