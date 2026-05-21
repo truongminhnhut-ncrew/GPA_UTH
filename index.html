@@ -5,364 +5,217 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="description" content="GPA Tracker - Quản lý điểm GPA theo từng học kỳ, xuất/nhập Excel dễ dàng"/>
   <title>GPA Tracker – Quản Lý Điểm Học Phần</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-
   <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
-
   <link rel="stylesheet" href="style.css"/>
 </head>
-
 <body>
-
   <div class="app-wrapper">
 
-    <!-- ================= SIDEBAR ================= -->
+    <!-- ===== SIDEBAR ===== -->
     <aside class="sidebar" id="sidebar">
-
       <div class="sidebar-header">
         <div class="logo">
-
           <div class="logo-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path
-                d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-
           <div>
             <h1 class="logo-title">GPA Tracker</h1>
             <p class="logo-sub">Quản lý điểm học phần</p>
           </div>
-
         </div>
       </div>
 
-      <!-- ================= NAV ================= -->
       <nav class="sidebar-nav">
-
         <div class="nav-section-label">Tổng quan</div>
-
-        <button
-          class="nav-item active"
-          id="nav-overview"
-          onclick="showOverview()">
-
-          <svg viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
-            <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
-            <rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
-            <rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
-          </svg>
-
+        <button class="nav-item active" id="nav-overview" onclick="showOverview()">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/></svg>
           Dashboard
         </button>
 
-        <!-- HK -->
         <div class="nav-section-label">Học kỳ chính</div>
-
         <button class="nav-item" onclick="showSemester(0)" id="nav-sem-0">
-          HK1
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Học kỳ 1
         </button>
-
         <button class="nav-item" onclick="showSemester(1)" id="nav-sem-1">
-          HK2
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Học kỳ 2
         </button>
 
-        <!-- HE -->
         <div class="nav-section-label summer-label">☀️ Kỳ hè</div>
-
         <button class="nav-item summer" onclick="showSemester(2)" id="nav-sem-2">
-          Hè 1
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Kỳ hè 1
         </button>
 
-        <!-- HK -->
         <div class="nav-section-label">Học kỳ chính</div>
-
         <button class="nav-item" onclick="showSemester(3)" id="nav-sem-3">
-          HK3
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Học kỳ 3
         </button>
-
         <button class="nav-item" onclick="showSemester(4)" id="nav-sem-4">
-          HK4
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Học kỳ 4
         </button>
 
-        <!-- HE -->
         <div class="nav-section-label summer-label">☀️ Kỳ hè</div>
-
         <button class="nav-item summer" onclick="showSemester(5)" id="nav-sem-5">
-          Hè 2
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Kỳ hè 2
         </button>
 
-        <!-- HK -->
         <div class="nav-section-label">Học kỳ chính</div>
-
         <button class="nav-item" onclick="showSemester(6)" id="nav-sem-6">
-          HK5
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Học kỳ 5
         </button>
-
         <button class="nav-item" onclick="showSemester(7)" id="nav-sem-7">
-          HK6
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Học kỳ 6
         </button>
 
-        <!-- HE -->
         <div class="nav-section-label summer-label">☀️ Kỳ hè</div>
-
         <button class="nav-item summer" onclick="showSemester(8)" id="nav-sem-8">
-          Hè 3
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Kỳ hè 3
         </button>
 
-        <!-- HK -->
         <div class="nav-section-label">Học kỳ chính</div>
-
         <button class="nav-item" onclick="showSemester(9)" id="nav-sem-9">
-          HK7
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Học kỳ 7
         </button>
-
         <button class="nav-item" onclick="showSemester(10)" id="nav-sem-10">
-          HK8
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Học kỳ 8
         </button>
-
       </nav>
 
-      <!-- ================= FOOTER ================= -->
       <div class="sidebar-footer">
-
         <button class="btn-excel import" onclick="importExcel()">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Nhập Excel
         </button>
-
         <button class="btn-excel export" onclick="exportExcel()">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Xuất Excel
         </button>
-
-        <input
-          type="file"
-          id="excel-file-input"
-          accept=".xlsx,.xls"
-          style="display:none"
-          onchange="handleFileImport(event)"
-        />
-
+        <input type="file" id="excel-file-input" accept=".xlsx,.xls" style="display:none" onchange="handleFileImport(event)"/>
       </div>
-
     </aside>
 
-    <!-- ================= MAIN ================= -->
+    <!-- ===== MAIN CONTENT ===== -->
     <main class="main-content">
 
-      <!-- MOBILE HEADER -->
+      <!-- Mobile header -->
       <div class="mobile-header">
-
         <button class="hamburger" onclick="toggleSidebar()">
-          <span></span>
-          <span></span>
-          <span></span>
+          <span></span><span></span><span></span>
         </button>
-
-        <span class="mobile-title">
-          GPA Tracker
-        </span>
-
+        <span class="mobile-title">GPA Tracker</span>
       </div>
 
-      <!-- ================= OVERVIEW ================= -->
+      <!-- ===== OVERVIEW PAGE ===== -->
       <section id="page-overview" class="page active">
-
         <div class="page-header">
-
           <div>
-            <h2 class="page-title">
-              Dashboard Tổng Quan
-            </h2>
-
-            <p class="page-subtitle">
-              Theo dõi GPA toàn bộ chương trình học
-            </p>
+            <h2 class="page-title">Dashboard Tổng Quan</h2>
+            <p class="page-subtitle">Theo dõi điểm GPA toàn bộ chương trình học</p>
           </div>
-
           <div class="cumulative-gpa-badge" id="overall-gpa-badge">
-
-            <span class="badge-label">
-              GPA Tích Lũy
-            </span>
-
-            <span class="badge-value" id="overall-gpa-value">
-              —
-            </span>
-
-            <span class="badge-rank" id="overall-gpa-rank">
-            </span>
-
+            <span class="badge-label">GPA Tích Lũy</span>
+            <span class="badge-value" id="overall-gpa-value">—</span>
+            <span class="badge-rank" id="overall-gpa-rank"></span>
           </div>
-
         </div>
 
-        <!-- STATS -->
+        <!-- Stats row -->
         <div class="stats-grid" id="stats-grid"></div>
 
-        <!-- CHART -->
+        <!-- Chart -->
         <div class="card chart-card">
-
           <div class="card-header">
             <h3>Biểu Đồ GPA Theo Học Kỳ</h3>
           </div>
-
           <div class="chart-wrapper">
             <canvas id="gpaChart" height="260"></canvas>
           </div>
-
         </div>
 
-        <!-- SEM SUMMARY -->
+        <!-- Semester cards summary -->
         <div class="card">
-
           <div class="card-header">
             <h3>Tổng Hợp Các Học Kỳ</h3>
           </div>
-
-          <div
-            class="semester-summary-grid"
-            id="semester-summary-grid">
-          </div>
-
+          <div class="semester-summary-grid" id="semester-summary-grid"></div>
         </div>
-
       </section>
 
-      <!-- ================= SEMESTER PAGE ================= -->
+      <!-- ===== SEMESTER PAGE ===== -->
       <section id="page-semester" class="page">
-
         <div class="page-header">
-
           <div>
-            <h2 class="page-title" id="sem-page-title">
-              Học kỳ
-            </h2>
-
-            <p class="page-subtitle" id="sem-page-subtitle">
-              Quản lý môn học và điểm số
-            </p>
+            <h2 class="page-title" id="sem-page-title">Học kỳ</h2>
+            <p class="page-subtitle" id="sem-page-subtitle">Quản lý môn học và điểm số</p>
           </div>
-
           <div class="sem-gpa-badge" id="sem-gpa-badge">
-
-            <span class="badge-label">
-              GPA Học Kỳ
-            </span>
-
-            <span class="badge-value" id="sem-gpa-value">
-              —
-            </span>
-
+            <span class="badge-label">GPA Học Kỳ</span>
+            <span class="badge-value" id="sem-gpa-value">—</span>
             <span class="badge-rank" id="sem-gpa-rank"></span>
-
           </div>
-
         </div>
 
-        <!-- SEM STATS -->
+        <!-- Sem stats -->
         <div class="sem-stats-row" id="sem-stats-row"></div>
 
-        <!-- SUBJECT TABLE -->
+        <!-- Subject table -->
         <div class="card table-card">
-
           <div class="card-header">
-
-            <h3 id="sem-table-title">
-              Danh Sách Môn Học
-            </h3>
-
+            <h3 id="sem-table-title">Danh Sách Môn Học</h3>
             <button class="btn-add" onclick="addSubject()">
-              + Thêm môn
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+              Thêm môn
             </button>
-
           </div>
-
           <div class="table-wrapper">
-
             <table class="subject-table" id="subject-table">
-
               <thead>
                 <tr>
                   <th class="col-stt">STT</th>
                   <th class="col-code">Mã MH</th>
                   <th class="col-name">Tên Môn Học</th>
                   <th class="col-credits">Số TC</th>
-
                   <th class="col-score">Điểm QT</th>
                   <th class="col-score">Điểm GK</th>
                   <th class="col-score">Điểm CK</th>
-
-                  <!-- NEW -->
-                  <th class="col-score">
-                    Điểm TK (Manual)
-                  </th>
-
-                  <th class="col-grade">
-                    Điểm Chữ
-                  </th>
-
-                  <th class="col-gpa">
-                    GPA (4)
-                  </th>
-
-                  <th class="col-action">
-                    Thao tác
-                  </th>
+                  <th class="col-score">Điểm TK</th>
+                  <th class="col-grade">Điểm Chữ</th>
+                  <th class="col-gpa">GPA (4)</th>
+                  <th class="col-action">Thao tác</th>
                 </tr>
               </thead>
-
               <tbody id="subject-tbody"></tbody>
-
               <tfoot id="subject-tfoot"></tfoot>
-
             </table>
-
           </div>
-
-          <!-- EMPTY -->
           <div class="table-empty" id="table-empty">
-
-            <div class="empty-icon">
-              📚
-            </div>
-
-            <p>
-              Chưa có môn học nào.
-              Bạn có thể nhập QT/GK/CK
-              hoặc nhập trực tiếp điểm TK.
-            </p>
-
-            <button
-              class="btn-add-empty"
-              onclick="addSubject()">
-
-              Thêm môn học đầu tiên
-
-            </button>
-
+            <div class="empty-icon">📚</div>
+            <p>Chưa có môn học nào</p>
+            <button class="btn-add-empty" onclick="addSubject()">Thêm môn học đầu tiên</button>
           </div>
-
         </div>
 
-        <!-- ================= GUIDE ================= -->
+        <!-- Grade guide -->
         <div class="card grade-guide-card">
-
           <div class="card-header">
             <h3>Bảng Quy Đổi Điểm</h3>
           </div>
-
           <div class="grade-guide-table-wrap">
-
             <table class="grade-guide-table">
-
               <thead>
                 <tr>
                   <th>Điểm hệ 10</th>
@@ -371,83 +224,67 @@
                   <th>Xếp loại</th>
                 </tr>
               </thead>
-
               <tbody>
-
-                <tr>
+                <tr class="grade-row-A">
                   <td>8.5 – 10</td>
                   <td><span class="grade-chip grade-A">A</span></td>
                   <td><strong>4.0</strong></td>
-                  <td>🏆 Xuất sắc</td>
+                  <td><span class="rank-chip" style="color:#10b981;background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.3)">🏆 Xuất sắc / Giỏi</span></td>
                 </tr>
-
-                <tr>
+                <tr class="grade-row-B+">
                   <td>8.0 – 8.4</td>
                   <td><span class="grade-chip grade-B+">B+</span></td>
                   <td><strong>3.5</strong></td>
-                  <td>⭐ Giỏi</td>
+                  <td><span class="rank-chip" style="color:#a78bfa;background:rgba(167,139,250,0.15);border-color:rgba(167,139,250,0.3)">👍 Khá</span></td>
                 </tr>
-
-                <tr>
+                <tr class="grade-row-B">
                   <td>7.0 – 7.9</td>
                   <td><span class="grade-chip grade-B">B</span></td>
                   <td><strong>3.0</strong></td>
-                  <td>👍 Khá</td>
+                  <td><span class="rank-chip" style="color:#a78bfa;background:rgba(167,139,250,0.15);border-color:rgba(167,139,250,0.3)">👍 Khá</span></td>
                 </tr>
-
-                <tr>
+                <tr class="grade-row-C+">
                   <td>6.5 – 6.9</td>
                   <td><span class="grade-chip grade-C+">C+</span></td>
                   <td><strong>2.5</strong></td>
-                  <td>📊 Trung bình</td>
+                  <td><span class="rank-chip" style="color:#fbbf24;background:rgba(251,191,36,0.15);border-color:rgba(251,191,36,0.3)">📊 Trung bình</span></td>
                 </tr>
-
-                <tr>
+                <tr class="grade-row-C">
                   <td>5.5 – 6.4</td>
                   <td><span class="grade-chip grade-C">C</span></td>
                   <td><strong>2.0</strong></td>
-                  <td>📊 Trung bình</td>
+                  <td><span class="rank-chip" style="color:#fbbf24;background:rgba(251,191,36,0.15);border-color:rgba(251,191,36,0.3)">📊 Trung bình</span></td>
                 </tr>
-
-                <tr>
+                <tr class="grade-row-D+">
                   <td>5.0 – 5.4</td>
                   <td><span class="grade-chip grade-D+">D+</span></td>
                   <td><strong>1.5</strong></td>
-                  <td>⚠️ Yếu</td>
+                  <td><span class="rank-chip" style="color:#fb923c;background:rgba(249,115,22,0.15);border-color:rgba(249,115,22,0.3)">⚠️ Yếu</span></td>
                 </tr>
-
-                <tr>
+                <tr class="grade-row-D">
                   <td>4.0 – 4.9</td>
                   <td><span class="grade-chip grade-D">D</span></td>
                   <td><strong>1.0</strong></td>
-                  <td>⚠️ Yếu</td>
+                  <td><span class="rank-chip" style="color:#fb923c;background:rgba(249,115,22,0.15);border-color:rgba(249,115,22,0.3)">⚠️ Yếu</span></td>
                 </tr>
-
-                <tr>
+                <tr class="grade-row-F">
                   <td>&lt; 4.0</td>
                   <td><span class="grade-chip grade-F">F</span></td>
                   <td><strong>0</strong></td>
-                  <td>❌ Kém / Rớt</td>
+                  <td><span class="rank-chip" style="color:#f87171;background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.3)">❌ Kém / Rớt</span></td>
                 </tr>
-
               </tbody>
-
             </table>
-
           </div>
-
         </div>
-
       </section>
 
     </main>
-
   </div>
 
-  <!-- TOAST -->
+  <!-- Notification toast -->
   <div class="toast" id="toast"></div>
 
   <script src="app.js"></script>
-
 </body>
 </html>
