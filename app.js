@@ -165,6 +165,21 @@ function loadDB() {
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length === 11) {
         db = parsed;
+        // Tự động tính toán lại điểm chữ/GPA4 theo thang điểm UTH mới của tất cả môn đã lưu
+        let hasChanges = false;
+        db.forEach(sem => {
+          sem.forEach(sub => {
+            const oldLetter = sub.letter;
+            const oldGpa4 = sub.gpa4;
+            updateSubjectCalc(sub);
+            if (sub.letter !== oldLetter || sub.gpa4 !== oldGpa4) {
+              hasChanges = true;
+            }
+          });
+        });
+        if (hasChanges) {
+          saveDB();
+        }
       }
     }
   } catch(e) { /* ignore */ }
@@ -737,6 +752,7 @@ function handleFileImport(event) {
           sub.qt      = r[4] !== '' && r[4] !== undefined ? String(r[4]) : '';
           sub.gk      = r[5] !== '' && r[5] !== undefined ? String(r[5]) : '';
           sub.ck      = r[6] !== '' && r[6] !== undefined ? String(r[6]) : '';
+          sub.tk      = r[7] !== '' && r[7] !== undefined ? String(r[7]) : '';
           updateSubjectCalc(sub);
           newSubs.push(sub);
           importedCount++;
