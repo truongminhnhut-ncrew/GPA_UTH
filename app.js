@@ -31,18 +31,102 @@ const STORAGE_KEY   = 'gpa_tracker_data_v2';
 //                 6.0–6.9 → C+/2.5, 5.5–5.9 → C/2.0, 5.0–5.4 → D+/1.5,
 //                 4.0–4.9 → D/1.0, 2.1–3.9 → F+/0, 0–2.0 → F/0
 function scoreToGrade(score) {
-  if (score === null || score === undefined || score === '') return { letter: '—', gpa4: null };
+  if (score === null || score === undefined || score === '') {
+    return {
+      letter: '—',
+      gpa4: null,
+      rank: ''
+    };
+  }
+
   const s = parseFloat(score);
-  if (isNaN(s)) return { letter: '—', gpa4: null };
-  if (s >= 8.5)  return { letter: 'A',  gpa4: 4.0 };
-  if (s >= 8.0)  return { letter: 'B+', gpa4: 3.5 };
-  if (s >= 7.0)  return { letter: 'B',  gpa4: 3.0 };
-  if (s >= 6.0)  return { letter: 'C+', gpa4: 2.5 };
-  if (s >= 5.5)  return { letter: 'C',  gpa4: 2.0 };
-  if (s >= 5.0)  return { letter: 'D+', gpa4: 1.5 };
-  if (s >= 4.0)  return { letter: 'D',  gpa4: 1.0 };
-  if (s >= 2.1)  return { letter: 'F+', gpa4: 0.0 };
-  return { letter: 'F', gpa4: 0.0 };
+
+  if (isNaN(s)) {
+    return {
+      letter: '—',
+      gpa4: null,
+      rank: ''
+    };
+  }
+
+  // A
+  if (s >= 8.5) {
+    return {
+      letter: 'A',
+      gpa4: 4.0,
+      rank: 'Giỏi'
+    };
+  }
+
+  // B+
+  if (s >= 8.0) {
+    return {
+      letter: 'B+',
+      gpa4: 3.5,
+      rank: 'Khá'
+    };
+  }
+
+  // B
+  if (s >= 7.0) {
+    return {
+      letter: 'B',
+      gpa4: 3.0,
+      rank: 'Khá'
+    };
+  }
+
+  // C+
+  if (s >= 6.0) {
+    return {
+      letter: 'C+',
+      gpa4: 2.5,
+      rank: 'Trung bình'
+    };
+  }
+
+  // C
+  if (s >= 5.5) {
+    return {
+      letter: 'C',
+      gpa4: 2.0,
+      rank: 'Trung bình'
+    };
+  }
+
+  // D+
+  if (s >= 5.0) {
+    return {
+      letter: 'D+',
+      gpa4: 1.5,
+      rank: 'Trung bình yếu'
+    };
+  }
+
+  // D
+  if (s >= 4.0) {
+    return {
+      letter: 'D',
+      gpa4: 1.0,
+      rank: 'Trung bình yếu'
+    };
+  }
+
+  // F+
+  if (s >= 2.1) {
+    return {
+      letter: 'F+',
+      gpa4: 0.0,
+      rank: 'Kém'
+    };
+  }
+
+  // F
+  return {
+    letter: 'F',
+    gpa4: 0.0,
+    rank: 'Kém'
+  };
 }
 
 // ─── GPA RANK CLASSIFICATION ──────────────────────────────────
@@ -144,9 +228,10 @@ function updateSubjectCalc(sub) {
     const raw = calcFinalScore(sub.qt, sub.gk, sub.ck);
     sub.finalScore = raw !== null ? Math.round(raw * 10) / 10 : null;
   }
-  const { letter, gpa4 } = sub.finalScore !== null
-    ? scoreToGrade(sub.finalScore)
-    : { letter: '—', gpa4: null };
+  const { letter, gpa4, rank } = sub.finalScore !== null
+  ? scoreToGrade(sub.finalScore)
+  : { letter: '—', gpa4: null, rank: '' };
+  sub.rank = rank;
   sub.letter = letter;
   sub.gpa4   = gpa4;
 }
